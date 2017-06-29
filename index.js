@@ -27,14 +27,14 @@ logger.configure(
   {
     transports: [
       new (logger.transports.File) ({
-        name: 'cerebra-error',
-        filename: './logs/error.log',
+        name: 'SECAlert-error',
+        filename: './logs/SECAlert-error.log',
         level: 'error',
         timestamp: true,
       }),
       new (logger.transports.File) ({
-        name: 'cerebra-info',
-        filename: './logs/info.log',
+        name: 'SECAlert-info',
+        filename: './logs/SECAlert-info.log',
         level: 'info',
         timestamp: true,
       }),
