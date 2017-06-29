@@ -18,6 +18,8 @@
   "homepage": "https://github.com/JoeDevelops/SECAlert#readme",
   "dependencies": {
     "forever": "^0.15.3",
+    "node-redis-pubsub": "^1.0.3",
+    "redis": "^2.7.1",
     "winston": "^2.3.1"
   }
 }
