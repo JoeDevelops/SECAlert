@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/JoeDevelops/SECAlert/issues"
   },
-  "homepage": "https://github.com/JoeDevelops/SECAlert#readme"
+  "homepage": "https://github.com/JoeDevelops/SECAlert#readme",
+  "dependencies": {
+    "forever": "^0.15.3",
+    "winston": "^2.3.1"
+  }
 }
