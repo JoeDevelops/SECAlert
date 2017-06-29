@@ -1,0 +1,19 @@
+{
+  "name": "secalert",
+  "version": "1.0.0",
+  "description": "SEC 10-Q monitoring App with Alerting",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoeDevelops/SECAlert.git"
+  },
+  "author": "Joe Edwards",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoeDevelops/SECAlert/issues"
+  },
+  "homepage": "https://github.com/JoeDevelops/SECAlert#readme"
+}
