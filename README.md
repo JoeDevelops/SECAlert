@@ -1,2 +1,2 @@
 # SECAlert
-A SEC 10-K Monitoring Application
+A SEC 10-Q Monitoring Application
