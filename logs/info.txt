@@ -1,0 +1,1 @@
+This directory exists for log files.  Any new logs that are created should point to this folder.
