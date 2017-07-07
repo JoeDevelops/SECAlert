@@ -21,6 +21,7 @@
     "moment": "^2.18.1",
     "node-redis-pubsub": "^1.0.3",
     "redis": "^2.7.1",
+    "rss-parser": "^2.10.1",
     "winston": "^2.3.1"
   }
 }
