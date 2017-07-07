@@ -54,6 +54,15 @@ logger.configure(
 var filingsMonitor = new (forever.Monitor)('./modules/filingsMonitor.js');
 filingsMonitor.start();
 
+
+/*
+  Filing Evaluator:
+    This program actively monitors the SEC for new 10-Q reports.
+*/
+var filingEvaluator = new (forever.Monitor)('./modules/filingEvaluator.js');
+filingEvaluator.start();
+
+
 /*
   LOG MODULE FAILURE & RESTART ======================================
 */
