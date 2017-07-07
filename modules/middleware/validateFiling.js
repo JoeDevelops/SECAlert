@@ -5,5 +5,8 @@ module.exports = (entry)=> {
   // 3. Compare pubdate
   //    if: more recent than last update pub date, send to algo
   //    else: ignore
+
+  // NOTE:  entry from parsed.feed.entries has keys:
+  //  'title', 'link', 'pubDate', 'id'
   console.log("VALIDATING: " + JSON.stringify(entry));
 };

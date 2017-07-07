@@ -35,14 +35,14 @@ var validateFiling = require('./middleware/validateFiling');
 */ 
 var parseURLS = ()=> {
   // 10-K
-  parser.parseURL(config.tenKURL, function(err, parsed) {
+  parser.parseURL(config.tenKURL, (err, parsed)=> {
     parsed.feed.entries.forEach( (entry)=> {
       validateFiling(entry);
     })
   })
 
   //10-Q
-  parser.parseURL(config.tenQURL, function(err, parsed) {
+  parser.parseURL(config.tenQURL, (err, parsed)=> {
     parsed.feed.entries.forEach( (entry)=> {
       validateFiling(entry);
     })
