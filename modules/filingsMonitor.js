@@ -19,10 +19,41 @@ var logger = require('winston');
 var moment = require('moment');
 
 // Redis Client and Publish/Subscribe
-var RedisPubSub = require('node-redis-pubsub');
-var redisPubSub = new RedisPubSub();
-var Redis = require('redis');
-var redisClient = Redis.createClient();
+// var RedisPubSub = require('node-redis-pubsub');
+// var redisPubSub = new RedisPubSub();
+// var Redis = require('redis');
+// var redisClient = Redis.createClient();
+
+// For feed consumption
+var config = require('../config/feed');
+var parser = require('rss-parser');
+var validateFiling = require('./middleware/validateFiling');
+
+
+/*
+  FEED CONSUMPTION ==================================================
+*/ 
+var parseURLS = ()=> {
+  // 10-K
+  parser.parseURL(config.tenKURL, function(err, parsed) {
+    parsed.feed.entries.forEach( (entry)=> {
+      validateFiling(entry);
+    })
+  })
+
+  //10-Q
+  parser.parseURL(config.tenQURL, function(err, parsed) {
+    parsed.feed.entries.forEach( (entry)=> {
+      validateFiling(entry);
+    })
+  })
+
+  // NOTE:  entry from parsed.feed.entries has keys:
+  //  'title', 'link', 'pubDate', 'id'
+}
+
+// Timer for getting feed list
+let parseTimer = setTimeout(parseURLS, 1000 * 60 * config.parseInterval);
 
 
 /*
@@ -60,10 +91,10 @@ logger.log('info', 'serialManager launched.');
 /*
   Redis
 */
-redisPubSub.on('error', (err)=> {
-  logger.log('error', 'Redis Pub/Sub Error: ' + JSON.stringify(err));
-});
+// redisPubSub.on('error', (err)=> {
+//   logger.log('error', 'Redis Pub/Sub Error: ' + JSON.stringify(err));
+// });
 
-redisClient.on('error', (err)=> {
-  logger.log('error', 'Redis Client Error: ' + JSON.stringify(err));
-});
+// redisClient.on('error', (err)=> {
+//   logger.log('error', 'Redis Client Error: ' + JSON.stringify(err));
+// });
