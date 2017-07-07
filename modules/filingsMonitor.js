@@ -16,13 +16,12 @@
   DEPENDENCIES=======================================================
 */
 var logger = require('winston');
-var moment = require('moment');
 
 // Redis Client and Publish/Subscribe
-// var RedisPubSub = require('node-redis-pubsub');
-// var redisPubSub = new RedisPubSub();
-// var Redis = require('redis');
-// var redisClient = Redis.createClient();
+var RedisPubSub = require('node-redis-pubsub');
+var redisPubSub = new RedisPubSub();
+var Redis = require('redis');
+var redisClient = Redis.createClient();
 
 // For feed consumption
 var config = require('../config/feed');
@@ -37,14 +36,16 @@ var parseURLS = ()=> {
   // 10-K
   parser.parseURL(config.tenKURL, (err, parsed)=> {
     parsed.feed.entries.forEach( (entry)=> {
-      validateFiling(entry);
+      // true argument = 10-K report
+      validateFiling(entry, true, redisClient, redisPubSub);
     })
   })
 
   //10-Q
   parser.parseURL(config.tenQURL, (err, parsed)=> {
     parsed.feed.entries.forEach( (entry)=> {
-      validateFiling(entry);
+      // false argument = 10-Q report
+      validateFiling(entry, false, redisClient, redisPubSub);
     })
   })
 
@@ -80,9 +81,6 @@ logger.configure(
 );
 
 
-
-
-
 /*
   LOG DECLARATIONS ==================================================
 */
@@ -91,10 +89,10 @@ logger.log('info', 'serialManager launched.');
 /*
   Redis
 */
-// redisPubSub.on('error', (err)=> {
-//   logger.log('error', 'Redis Pub/Sub Error: ' + JSON.stringify(err));
-// });
+redisPubSub.on('error', (err)=> {
+  logger.log('error', 'Redis Pub/Sub Error: ' + JSON.stringify(err));
+});
 
-// redisClient.on('error', (err)=> {
-//   logger.log('error', 'Redis Client Error: ' + JSON.stringify(err));
-// });
+redisClient.on('error', (err)=> {
+  logger.log('error', 'Redis Client Error: ' + JSON.stringify(err));
+});
