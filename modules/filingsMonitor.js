@@ -16,6 +16,7 @@
   DEPENDENCIES=======================================================
 */
 var logger = require('winston');
+var moment = require('moment');
 
 // Redis Client and Publish/Subscribe
 var RedisPubSub = require('node-redis-pubsub');
@@ -26,7 +27,6 @@ var redisClient = Redis.createClient();
 // For feed consumption
 var config = require('../config/feed');
 var parser = require('rss-parser');
-var validateFiling = require('./middleware/validateFiling');
 
 
 /*
@@ -37,24 +37,49 @@ var parseURLS = ()=> {
   parser.parseURL(config.tenKURL, (err, parsed)=> {
     parsed.feed.entries.forEach( (entry)=> {
       // true argument = 10-K report
-      validateFiling(entry, true, redisClient, redisPubSub);
+      validateFiling(entry, true);
     })
-  })
+  });
 
   //10-Q
   parser.parseURL(config.tenQURL, (err, parsed)=> {
     parsed.feed.entries.forEach( (entry)=> {
       // false argument = 10-Q report
-      validateFiling(entry, false, redisClient, redisPubSub);
+      validateFiling(entry, false);
     })
-  })
-
-  // NOTE:  entry from parsed.feed.entries has keys:
-  //  'title', 'link', 'pubDate', 'id'
+  });
 }
 
 // Timer for getting feed list
-let parseTimer = setTimeout(parseURLS, 1000 * 60 * config.parseInterval);
+let parseTimer = setInterval(parseURLS, 1000 * 60);
+
+
+/*
+  FEED VALIDATION ===================================================
+*/
+var CIK_REGEX = /\(([0-9]{10})\)/;
+
+var validateFiling = (entry, isKReport)=> {
+  var cik = CIK_REGEX.exec(entry.title)[1];
+  var type = isKReport ? 'K' : 'Q';
+  var redisKey = cik + type;
+  var newPubDate = moment(entry.pubDate.toString());
+
+  redisClient.get(redisKey, (err, time)=> {
+    let oldPubDate = moment(time);
+    if(time === null || oldPubDate.isBefore(newPubDate)){
+
+      redisClient.set(redisKey, newPubDate.toISOString());
+
+      redisPubSub.emit('NEW_FILING', 
+        {
+          'cik': cik,
+          'type': type,
+        }
+      );
+    }
+  });
+};
 
 
 /*
@@ -84,7 +109,7 @@ logger.configure(
 /*
   LOG DECLARATIONS ==================================================
 */
-logger.log('info', 'serialManager launched.');
+logger.log('info', 'filingsMonitor launched.');
 
 /*
   Redis
