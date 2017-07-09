@@ -1,9 +1,13 @@
 /*
-  This modules monitors SEC filings every hour during the filing hours.
-  If new reports are observed, it alerts the 
+  This modules monitors SEC filings on regular intervals specified in
+  config/feed.js
 
-  Files:
-  -
+  It scans the SEC website at the URLs specified in config/feed.js and
+  checks all recent filings against the database.  Repeat reports are 
+  ignored. 
+
+  If new reports are observed, it publishes the event 'NEW_FILING'
+  with the filers CIK number as well as the report type (K or Q)
 
   Author:
   - Joe Edwards

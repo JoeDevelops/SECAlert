@@ -5,11 +5,15 @@
     to the email address in the config file.  
 
   Files:
-  -
+  - filingsMonitor.js:  Checks the SEC website on regular intervals
+    specified in config/feed.js for the most recent 10-K and 10-Q
+    filings.  Alerts filingEvaluator.js on receipt of a new filing
+    not already in the database.
+  - filingEvaluator.js:  Checks a filing if it meets the specified
+    criteria.  NOT YET IMPLEMENTED.
 
   Author:
-  - Joe Edwards
-  - joe@joedevelops.com
+  - Joe Edwards, joe@joedevelops.com
 */
 'use strict';
 

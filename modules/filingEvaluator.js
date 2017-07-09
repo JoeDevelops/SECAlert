@@ -1,9 +1,18 @@
 /*
-  This modules monitors SEC filings every hour during the filing hours.
-  If new reports are observed, it alerts the 
+  This modules subscribes to the event 'NEW_FILING'.  It access all
+  relevant company data by CIK.
 
-  Files:
-  -
+  If the company's data meets the evalutation criteria it will publish
+  the event 'CRITERIA_MET'.  This event will be monitored by 
+  notifier.js to alert recipient to the company.
+
+  TODO:
+  1. Determine relevant data points
+  2. Match data points to API calls.
+  3. Configure API calls for data points
+  4. Determine formula
+  5. Send data to formula
+  6. Publish event.
 
   Author:
   - Joe Edwards
