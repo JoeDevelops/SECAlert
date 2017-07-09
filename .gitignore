@@ -1,3 +1,4 @@
 logs/*.log
 node_modules/
 config/auth.js
+dump.rdb
