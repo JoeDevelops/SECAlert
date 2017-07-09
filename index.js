@@ -49,7 +49,7 @@ logger.configure(
 
 /*
   Filings Monitor:
-    This program actively monitors the SEC for new 10-Q reports.
+    This program actively monitors the SEC for new 10-Q/K reports.
 */
 var filingsMonitor = new (forever.Monitor)('./modules/filingsMonitor.js');
 filingsMonitor.start();
@@ -57,7 +57,7 @@ filingsMonitor.start();
 
 /*
   Filing Evaluator:
-    This program actively monitors the SEC for new 10-Q reports.
+    This program evaluates new filings.
 */
 var filingEvaluator = new (forever.Monitor)('./modules/filingEvaluator.js');
 filingEvaluator.start();
