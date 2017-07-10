@@ -69,12 +69,10 @@ var validateFiling = (entry, isKReport)=> {
   var redisKey = cik + type;
   var newPubDate = moment(entry.pubDate.toString());
 
-  redisClient.get(redisKey, (err, time)=> {
-    let oldPubDate = moment(time);
-    if(time === null || oldPubDate.isBefore(newPubDate)){
-
+  redisClient.get(redisKey, (err, pubDate)=> {
+    let oldPubDate = (pubDate ? moment(pubDate) : null);
+    if(oldPubDate === null || oldPubDate.isBefore(newPubDate)){
       redisClient.set(redisKey, newPubDate.toISOString());
-
       redisPubSub.emit('NEW_FILING', 
         {
           'cik': cik,
